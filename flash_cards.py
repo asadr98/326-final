@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 """This program is designed to parse through a set of flash cards for the user studying.
     
     INST326 Final Project
@@ -14,19 +13,45 @@ class Flash:
     
     Attr:
     cards (list): all the flash cards
-    individ_cards (list): each individual card
+    path: path to read in txt file
     """
     def __init__(self, path):
+        """Initializes a Flash object.
+
+        Args:
+            cards (list): List of the flash cards
+            path: path to read in txt file
+        """
         self.cards = []
         self.path = path
         
         
     def get_text(self):
+        """This function reads in text file
+        Driver: Asad Raheem
+        Navigator: Sana Hassan
+        Args:
+        text: object to read in text file
+        
+        Returns:
+            text
+        """
         text = ''
         with open(self.path, "r", encoding = "utf-8") as f:
             text = f.read()
         return text
+    
     def split_text_into_cards(self, text):
+        """This function splits the list of all cards into individual cards.
+        Driver: Sana Hassan
+        Navigator: Asad Raheem
+
+        Args:
+            individ_cards (list): Each individual card split
+
+        Side effects:
+            Modifies cards list to include each individual card
+        """
         individ_cards = text.split('End"')
        
         for maybe_card in individ_cards:
@@ -50,6 +75,22 @@ class Flash:
     |            some answer       |
     '''
     def go_thru(self, cards):
+        """This function outputs each question one by one and then 
+        allows the user to input their answer. It then informs them if they are correct or not.
+        If incorrect it outputs the correct answer. It does this for each individual card in the set.
+        Driver: Asad Raheem
+        Navigator: Sana Hassan
+
+        Args:
+            cards (list): List of cards
+            question_text (str): String of each question
+            answer_prompt (str): String to inform user to input answer
+            user_answer (input): User input of their answer.
+        
+        Side effects:
+            Prints each question, user answer, whether answer is correct or not, and correct answer.
+        
+        """
         for card in cards:
             print('+' + ('-'*60) + '+')
             question_text = f'question; "{card.question}"'
@@ -70,43 +111,31 @@ class Flash:
             else:
                 print('Wrong answer')
                 print(f'correct answer:"{card.answer}"')
-                
-    def go_thru_old_n_busted(self):
-  
-        """This function goes through each card, displays the question, gets user input, and lets them know if it is correct.
-        Args:
-        individ_cards (list): each individual card
-        
-        Prints:
-        Each question
-        User answer
-        """
-        with open(path, "r", encoding = "utf-8") as f:
-            text = f.read()
-            individ_cards = text.split('End"')
-            for each_card in individ_cards:
-                question = re.compile(r'Question:\s(.+)').search(each_card).group(1)
-                print('Question: ', question)
-                answer = re.compile(r'Answer:\s(.+)').search(each_card).group(1)
-                user_answer = input("Enter your answer: ")
-                print(user_answer)
-                if user_answer == answer:
-                    print('Correct answer')
-                    break
-                else:
-                    print('Wrong answer')
 
 class Card:
     """This class stores each question and answer.
+    Driver: Sana Hassan
+    Navigator: Asad Raheem
+    
+    Args:
+    question: hold each question
+    answer: holds each answer
     """
     def __init__(self, question, answer):
         self.question = question
         self.answer = answer
 
 def main(f):
-    """Calls other functions.
-    Parameters:
-    Path (str): the path of the text file that will be parsed.
+    """Calls functions from Flash class to output each card and allow user answers.
+    Driver: Asad Raheem
+    Navigator: Sana Hassan
+    
+    Args:
+    flash (variable): Instance of Flash card
+    text (variable): Instance of get_text() function from Flash class
+    
+    Returns:
+    f: Instance of Flash card
     
     """
     
@@ -118,14 +147,16 @@ def main(f):
     
     return f
 
-    
-    
+   
 
 def parse_args(arglist):
-    """ Parse command-line arguments. 
-    Attr:
+    """ Parse command-line arguments.
+    Driver: Sana Hassan
+    Navigator: Asad Raheem
+    Args:
     parser
     parser.add_argument
+    
     Returns:
     arglist"""
     parser = ArgumentParser(arglist)
@@ -138,8 +169,9 @@ if __name__ == "__main__":
     args
     Prints:
     Main function
+    "Thank you for studying. Great job!"
     """
 
     args = parse_args(sys.argv[1:])
     print(main(args.path))
-                    
+    print("Thank you for studying. Great job!")
